@@ -29,7 +29,7 @@ export class ListingsService {
     return this.listingsRepository.createListing(createListingDto);
   }
 
-  async deleteTask(id: string): Promise<void> {
+  async deleteTask(id: number): Promise<void> {
     const result = await this.listingsRepository.delete({ id });
 
     if (result.affected === 0) {

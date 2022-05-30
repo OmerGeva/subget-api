@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { GetListingsFilterDto } from './dto/get-listings-filter.dto';
@@ -22,15 +23,16 @@ export class ListingsRepository extends Repository<Listing> {
   }
 
   async createListing(createListingDto: CreateListingDto): Promise<Listing> {
-    const { title, description, address } = createListingDto;
-
     const listing = this.create({
-      title,
-      description,
-      address,
+      ...createListingDto,
     });
-
-    await this.save(listing);
+    try {
+      await this.save(listing);
+    } catch {
+      throw new BadRequestException(
+        'Failed to create listing, please verify you filled out all of the correct fields',
+      );
+    }
     return listing;
   }
 }

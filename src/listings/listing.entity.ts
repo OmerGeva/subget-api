@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { validateOrReject } from 'class-validator';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Listing {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   title: string;
@@ -14,36 +15,41 @@ export class Listing {
   @Column()
   address: string;
 
-  // @Column()
-  // phone_number: string;
+  @Column()
+  phone_number: string;
 
-  // @Column()
-  // contact_name: string;
+  @Column()
+  contact_name: string;
 
-  // @Column()
-  // image: string;
+  @Column()
+  image: string;
 
-  // @Column()
-  // washing_machine: boolean;
+  @Column()
+  washing_machine: boolean;
 
-  // @Column()
-  // pet_allowed: boolean;
+  @Column()
+  pet_allowed: boolean;
 
-  // @Column()
-  // near_beach: boolean;
+  @Column()
+  near_beach: boolean;
 
-  // @Column()
-  // wifi: boolean;
+  @Column()
+  wifi: boolean;
 
-  // @Column()
-  // bedrooms: number;
+  @Column()
+  bedrooms: number;
 
-  // @Column()
-  // bathrooms: number;
+  @Column()
+  bathrooms: number;
 
-  // @Column()
-  // floor: number;
+  @Column()
+  floor: number;
 
-  // @Column()
-  // price: number;
+  @Column()
+  price: number;
+
+  @BeforeInsert()
+  async validate() {
+    await validateOrReject(this);
+  }
 }

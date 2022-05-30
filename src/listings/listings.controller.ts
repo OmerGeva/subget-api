@@ -17,8 +17,9 @@ export class ListingsController {
   constructor(private listingsService: ListingsService) {}
 
   @Get()
-  getAllListings(@Query() filterDto: GetListingsFilterDto): Promise<Listing[]> {
-    return this.listingsService.getListings(filterDto);
+  async getAllListings(@Query() filterDto: GetListingsFilterDto) {
+    const listings = await this.listingsService.getListings(filterDto);
+    return { listings };
   }
 
   @Get('/:id')
@@ -32,7 +33,7 @@ export class ListingsController {
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): Promise<void> {
+  deleteTask(@Param('id') id: number): Promise<void> {
     return this.listingsService.deleteTask(id);
   }
 }
