@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CreateListingDto } from './dto/create-listing.dto';
 import { GetListingsFilterDto } from './dto/get-listings-filter.dto';
 import { Listing } from './listing.model';
@@ -21,5 +29,10 @@ export class ListingsController {
   @Post()
   createListing(@Body() createListingDto: CreateListingDto): Promise<Listing> {
     return this.listingsService.createListing(createListingDto);
+  }
+
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): Promise<void> {
+    return this.listingsService.deleteTask(id);
   }
 }

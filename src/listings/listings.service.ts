@@ -28,4 +28,12 @@ export class ListingsService {
   createListing(createListingDto: CreateListingDto): Promise<Listing> {
     return this.listingsRepository.createListing(createListingDto);
   }
+
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.listingsRepository.delete({ id });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+  }
 }
