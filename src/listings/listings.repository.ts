@@ -13,7 +13,7 @@ export class ListingsRepository extends Repository<Listing> {
 
     if (search) {
       query.andWhere(
-        'listing.title LIKE :search OR listing.description LIKE :search',
+        'listing.title LIKE :search OR listing.description LIKE :search OR listing.address LIKE :search',
         { search: `%${search}%` },
       );
     }
