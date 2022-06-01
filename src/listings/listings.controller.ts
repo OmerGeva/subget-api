@@ -29,6 +29,7 @@ export class ListingsController {
 
   @Post()
   createListing(@Body() createListingDto: CreateListingDto): Promise<Listing> {
+    console.log(createListingDto);
     return this.listingsService.createListing(createListingDto);
   }
 

@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateListingDto {
   @IsNotEmpty()
@@ -19,15 +20,19 @@ export class CreateListingDto {
   @IsNotEmpty()
   image: string;
 
+  @Transform(({ value }) => value === 'true')
   @IsNotEmpty()
   washing_machine: boolean;
 
+  @Transform(({ value }) => value === 'true')
   @IsNotEmpty()
   pet_allowed: boolean;
 
+  @Transform(({ value }) => value === 'true')
   @IsNotEmpty()
   near_beach: boolean;
 
+  @Transform(({ value }) => value === 'true')
   @IsNotEmpty()
   wifi: boolean;
 

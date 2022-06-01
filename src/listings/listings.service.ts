@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
@@ -25,7 +27,22 @@ export class ListingsService {
     return foundListing;
   }
 
-  createListing(createListingDto: CreateListingDto): Promise<Listing> {
+  async createListing(createListingDto: CreateListingDto): Promise<Listing> {
+    const image = await axios
+      .get(
+        `https://api.unsplash.com/search/photos?query=apartment&&page=1&client_id=${process.env.UNSPLASH_CLIENT_ID}`,
+      )
+      .then((res) => {
+        console.log(`statusCode: ${res.status}`);
+        console.log(res.data.results);
+        return res.data.results[
+          Math.floor(Math.random() * res.data.results.length)
+        ].urls.regular;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    if (image) createListingDto.image = image;
     return this.listingsRepository.createListing(createListingDto);
   }
 
