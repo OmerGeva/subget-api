@@ -33,8 +33,6 @@ export class ListingsService {
         `https://api.unsplash.com/search/photos?query=apartment&&page=1&client_id=${process.env.UNSPLASH_CLIENT_ID}`,
       )
       .then((res) => {
-        console.log(`statusCode: ${res.status}`);
-        console.log(res.data.results);
         return res.data.results[
           Math.floor(Math.random() * res.data.results.length)
         ].urls.regular;
@@ -43,7 +41,8 @@ export class ListingsService {
         console.error(error);
       });
     if (image) createListingDto.image = image;
-    return this.listingsRepository.createListing(createListingDto);
+    const newCreateListingDto = this.convertBooleanValues(createListingDto);
+    return this.listingsRepository.createListing(newCreateListingDto);
   }
 
   async deleteTask(id: number): Promise<void> {
@@ -52,5 +51,21 @@ export class ListingsService {
     if (result.affected === 0) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
+  }
+
+  private convertBooleanValues(
+    createListingDto: CreateListingDto,
+  ): CreateListingDto {
+    const keys = Object.keys(createListingDto);
+    let n = keys.length;
+    while (n--) {
+      const key = keys[n];
+      if (createListingDto[key] == 'true' || createListingDto[key] == 'false') {
+        createListingDto[key] = createListingDto[key] === 'true';
+      } else {
+        createListingDto[key] = createListingDto[key];
+      }
+    }
+    return createListingDto;
   }
 }
